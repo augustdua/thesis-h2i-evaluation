@@ -141,13 +141,7 @@ def build_from_ckpt(ckpt: Path, device: str, force_z_hw: int | None = None):
     fuse_out_ch = int(args.get("fuse_out_ch", 512) or 512)
     expand_before_fuse = bool(args.get("expand_before_fuse", False))
     z_hw = int(force_z_hw if force_z_hw is not None else args.get("z_hw", 128) or 128)
-    bbdm = CFG.get("bbdm_root") or ""
-    if not bbdm:
-        raise SystemExit(
-            "Set bbdm_root in configs/chapter4.json. "
-            "C9Paired is imported from that checkout, not vendored."
-        )
-    C9Paired = import_train_c9(Path(bbdm)).C9Paired
+    C9Paired = import_train_c9().C9Paired
     uni = make_uni_empty()
     model = C9Paired(
         uni_module=uni,

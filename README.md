@@ -1,15 +1,15 @@
-# Chapter 4 evaluation
+# Thesis H&E-to-IHC models and Chapter 4 evaluation
 
-Evaluation code for the Chapter 4 H&E-to-IHC numbers: exemplar retrieval, direct translators, and the variational information bottleneck (VIB). Dataset tiles and model checkpoints are separate downloads. This repository does not contain them, and `outputs/` is not committed.
+This repository contains the thesis model code and the Chapter 4 evaluation scripts: the MatchFormer exemplar matcher, the paired C9 translators (cross-decode, PairNCE, PatchNCE, and the variational information bottleneck), and the metrics those chapters report. Dataset tiles and checkpoints are separate downloads. This repository does not contain them, and `outputs/` is not committed.
 
 Repository: https://github.com/augustdua/thesis-h2i-evaluation
 
 ## Layout
 
-- `exemplar/`: MatchFormer shallow-64 retrieval. Oracle, selected error, top-4, Random, Constant, H&E nearest neighbour, and learned K=4, K=10, K=20.
-- `direct_translators/`: DAB-L1, linear CKA, spatial effective rank, wavelet energy, and power above half the Nyquist frequency.
-- `vib/`: the same DAB-L1 on saved VIB images, plus a list of checkpoints and image sets that were not retained.
-- `src/`: the metric functions those scripts import. Linear CKA is defined once, in `src/cka.py`.
+- `exemplar/`: MatchFormer shallow-64 network (`matchformer_pair.py`, `matchformer_shallow64.py`) and its eval (`eval_k4.py`, `eval_baselines.py`). Oracle, selected error, top-4, Random, Constant, H&E nearest neighbour, and learned K=4, K=10, K=20.
+- `direct_translators/`: C9 paired network (`c9_paired.py`: encoders, UNI fusion, decoders, PatchNCE, PairNCE, critics) and the translator evals (CKA, spatial effective rank, DAB-L1, wavelet, half-Nyquist).
+- `vib/`: VIB network entry (`network.py` imports `C9Paired(vib=True)` and `GaussianBottleneckHead` from `c9_paired.py`, one copy of the class) and `score_vib.py`. No VIB weights.
+- `src/`: shared metrics (CKA, DAB, spatial rank, wavelet, bootstrap). Linear CKA is defined once, in `src/cka.py`.
 - `configs/`: fixed hyperparameters and local paths. `configs/train_dab010.txt` is the 1,867-name DAB-enriched list used to pick the Constant donor. `configs/hf_study_stems.json` is the 240-tile list for the frequency study. Neither file is a score dump.
 - `scripts/run_chapter4.py`: one local runner. It does not start Modal.
 - `outputs/`: gitignored. JSON and any generated images go here.
@@ -28,7 +28,7 @@ Exemplar extras, not in those dataset cards:
 - K=10 and K=20: `exemplar_k10_ckpt` and `exemplar_k20_ckpt`. Checkpoints were written every 25 epochs, so the saved file is epoch 200. Epochs 192 (K=10) and 188 (K=20) were not saved.
 - Donor mosaics, 4,096 donors: `donor_he_grouped_512.npy` and `donor_ihc_grouped_512.npy` in `donor_dir`.
 
-`bbdm_root` is only required for CKA, spatial effective rank, and any decode that builds `C9Paired`. Those classes stay in `bbdm_BCI/train_c9_paired.py` of a BBDM checkout, together with `bbdm_BCI/src_ds_her2_thunder.py`. They are not copied here: `train_c9_paired.py` reads a local token file on import. Image metrics on saved PNGs (DAB-L1, wavelet, half-Nyquist) do not need it. The CKA script builds UNI with `pretrained=False` and then loads the checkpoint state dict, which is the procedure in `compute_thesis_diag_a12_a4.py`.
+The C9 class is in this repo (`direct_translators/c9_paired.py`). The original training file reads a token on import; that read was not copied. You still pass a UNI module in. The CKA script builds UNI with `pretrained=False` and then loads the checkpoint state dict. The variance-exploding bridge U-Net is a thesis model, but this layout has no folder for it, so that network is not in the repository.
 
 Fixed settings recorded in `configs/chapter4.json`: seed 42, 400 tiles for CKA and spatial rank, DAB threshold 0.3, tissue optical density 0.15, 4,096 donors. The frequency study marks a tile DAB-positive when the real IHC brown fraction is at least 0.05. The Constant donor is the lowest mean patch error on `configs/train_dab010.txt`, not on all 11,610 training tiles.
 
