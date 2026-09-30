@@ -1,0 +1,44 @@
+{
+  "seed": 42,
+  "n_tiles": 400,
+  "dab_threshold": 0.3,
+  "tissue_od": 0.15,
+  "n_donors": 4096,
+  "brown_pos_fraction": 0.05,
+  "checkpoint_every_epochs": 25,
+  "splits": {
+    "train": 11610,
+    "val": 3582,
+    "test": 5980
+  },
+  "exemplar_k10_saved_epoch": 200,
+  "exemplar_k20_saved_epoch": 200,
+  "exemplar_k10_recall_epoch_not_saved": 192,
+  "exemplar_k20_recall_epoch_not_saved": 188,
+  "her2_root": "",
+  "bbdm_root": "",
+  "donor_dir": "",
+  "train_dab010_list": "configs/train_dab010.txt",
+  "exemplar_k4_ckpt": "",
+  "exemplar_k10_ckpt": "",
+  "exemplar_k20_ckpt": "",
+  "hf_stems": "configs/hf_study_stems.json",
+  "gen_root": "",
+  "translator_ckpts": {
+    "pair_patchnce_c64": "",
+    "i2h_removed_c512": "",
+    "xdec_grid64": "",
+    "xdec_grid32": ""
+  },
+  "gen_dirs": {
+    "xdec_c64": "",
+    "xdec_c512": "",
+    "patchnce_c64": "",
+    "patchnce_c128": "",
+    "patchnce_c256": "",
+    "patchnce_c512": "",
+    "pairnce_c64": "",
+    "pairnce_c512": "",
+    "vib_c64_b1e-4": ""
+  }
+}
