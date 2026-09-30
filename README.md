@@ -4,7 +4,7 @@ Model definitions and the scripts that fill the Chapter 4 tables for H&E-to-IHC 
 
 https://github.com/augustdua/thesis-h2i-evaluation
 
-Tiles: [augustander/her2match-full](https://huggingface.co/datasets/augustander/her2match-full). Checkpoints: [augustander/ch4-operating-ckpts](https://huggingface.co/augustander/ch4-operating-ckpts). Point `configs/chapter4.json` at the local copies. Split sizes are 11,610 train, 3,582 val, and 5,980 test. Layout is `HE/{train,val,test}` and `IHC/{train,val,test}`.
+Tiles: [augustander/her2match-full](https://huggingface.co/datasets/augustander/her2match-full). Validation and test tiles are in the same archive, under `val` and `test`. Checkpoints: [augustander/ch4-operating-ckpts](https://huggingface.co/datasets/augustander/ch4-operating-ckpts). Point `configs/chapter4.json` at the local copies. Split sizes are 11,610 train, 3,582 val, and 5,980 test. Layout is `HE/{train,val,test}` and `IHC/{train,val,test}`.
 
 ## Layout
 
